@@ -7,4 +7,17 @@
 - name: install required packages
   yum: name={{ item }} state=present
   with_items:
+    - gcc
     - munge
+    - hwloc
+    - pam-devel
+    - ncurses-devel
+    - gtk2-devel
+
+- name: check if already installed
+  stat: path=/opt/slurm/{{ slurm_version }}/bin
+  register: slurm_bin
+  changed_when: slurm_bin.stat.exists == False
+
+- include: install.yml
+  when: slurm_bin.stat.exists == False
