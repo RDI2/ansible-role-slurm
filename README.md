@@ -7,6 +7,7 @@ This role simply installs SLURM Workload Manager with the following configuratio
 - Configuration directory: `/opt/slurm/{{ slurm_version }}/etc`
 - Logging directory: `/var/log/slurm`
 - Slurmd spool directory: `/var/spool/slurmd`
+- PAM Slurm: `/lib64/security/pam_slurm.so`
 
 Platforms
 ---------
@@ -35,7 +36,7 @@ Include the role like this:
 License
 -------
 
-MIT
+MIT License.
 
 Author
 ------
