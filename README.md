@@ -3,8 +3,8 @@ Ansible Role - rdi2.slurm
 
 This role simply installs SLURM Workload Manager with the following configuration.
 
-- Install directory: `/opt/slurm/<version>`
-- Configuration directory: `/opt/slurm/<version>/etc`
+- Install directory: `/opt/slurm/{{ slurm_version }}`
+- Configuration directory: `/opt/slurm/{{ slurm_version }}/etc`
 - Logging directory: `/var/log/slurm`
 - Slurmd spool directory: `/var/spool/slurmd`
 
@@ -30,7 +30,7 @@ Include the role like this:
 
     - hosts: servers
       roles:
-         - { role: rdi2.slurm }
+         - { role: kjtanaka.rdi2-slurm }
 
 License
 -------
