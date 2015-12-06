@@ -1,2 +1,10 @@
 ---
 # tasks file for slurm
+
+- name: install epel repository
+  yum: name=epel-release state=present
+
+- name: install required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - munge
