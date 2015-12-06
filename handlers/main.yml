@@ -1,2 +1,5 @@
 ---
 # handlers file for slurm
+
+- name: restart munge
+  service: name=munge state=restarted

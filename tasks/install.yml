@@ -11,7 +11,7 @@
   file: path=/opt/slurm state=directory owner=root group=root mode=0755
 
 - name: configure slurm
-  shell: ./configure --prefix=/opt/slurm/{{ slurm_version }}
+  shell: ./configure --prefix=/opt/slurm/{{ slurm_version }} --enable-pam --with-pam_dir=/lib64/security
   args:
     chdir: /tmp/slurm-{{ slurm_version }}
     creates: /tmp/slurm-{{ slurm_version }}/slurm/slurm.h

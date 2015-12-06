@@ -10,10 +10,22 @@
     - libselinux-python
     - gcc
     - munge
+    - munge-devel
     - hwloc
     - pam-devel
     - ncurses-devel
     - gtk2-devel
+    - perl-devel
+    - perl-CPAN
+
+- name: create munge key
+  shell: create-munge-key
+  args:
+    creates: /etc/munge/munge.key
+  notify: restart munge
+
+- name: enable munge service
+  service: name=munge enabled=yes
 
 - name: check if already installed
   stat: path=/opt/slurm/{{ slurm_version }}/bin
@@ -46,4 +58,3 @@
   with_items:
     - /var/spool/slurmd
     - /var/log/slurm
-    - /opt/local/slurm

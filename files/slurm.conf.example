@@ -22,7 +22,7 @@ AuthType=auth/munge
 #JobCredentialPrivateKey=
 #JobCredentialPublicCertificate=
 StateSaveLocation=/tmp
-SlurmdSpoolDir=/tmp/slurmd
+SlurmdSpoolDir=/var/spool/slurmd
 SwitchType=switch/none
 MpiDefault=none
 SlurmctldPidFile=/var/run/slurmctld.pid
@@ -75,11 +75,11 @@ FastSchedule=1
 #
 # LOGGING
 SlurmctldDebug=3
-#SlurmctldLogFile=
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
 SlurmdDebug=3
-#SlurmdLogFile=
-JobCompType=jobcomp/none
-#JobCompLoc=
+SlurmdLogFile=/var/log/slurm/slurmd.log
+JobCompType=jobcomp/filetxt
+JobCompLoc=/var/log/slurm/job_completions
 #
 # ACCOUNTING
 #JobAcctGatherType=jobacct_gather/linux
