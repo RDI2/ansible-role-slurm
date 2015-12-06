@@ -1,4 +1,4 @@
-Ansible Role - rdi2.slurm
+Ansible Role - rdi2-slurm
 =========================
 
 This role simply installs SLURM Workload Manager with the following configuration.
