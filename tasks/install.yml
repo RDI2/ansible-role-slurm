@@ -21,3 +21,15 @@
   args:
     chdir: /tmp/slurm-{{ slurm_version }}
     creates: /opt/slurm/{{ slurm_version }}/sbin/slurmd
+
+- name: make contrib
+  shell: make contrib
+  args:
+    chdir: /tmp/slurm-{{ slurm_version }}
+    creates: contribs/pam/.libs/pam_slurm.so
+
+- name: copy pam_slurm into lib64/security
+  shell: cp contribs/pam/.libs/pam_slurm.so /lib64/security/
+  args:
+    chdir: /tmp/slurm-{{ slurm_version }}
+    creates: /lib64/security/pam_slurm.so
