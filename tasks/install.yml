@@ -1,0 +1,23 @@
+---
+# tasks file for slurm install role
+
+- name: download slurm tarball
+  get_url: url={{ slurm_url }} dest=/tmp
+
+- name: extract slurm tarball
+  unarchive: copy=no src=/tmp/slurm-{{ slurm_version }}.tar.bz2 dest=/tmp
+
+- name: create slurm installation directory
+  file: path=/opt/slurm state=directory owner=root group=root mode=0755
+
+- name: configure slurm
+  shell: ./configure --prefix=/opt/slurm/{{ slurm_version }} --enable-pam --with-pam_dir=/lib64/security
+  args:
+    chdir: /tmp/slurm-{{ slurm_version }}
+    creates: /tmp/slurm-{{ slurm_version }}/slurm/slurm.h
+
+- name: install slurm
+  shell: make && make install
+  args:
+    chdir: /tmp/slurm-{{ slurm_version }}
+    creates: /opt/slurm/{{ slurm_version }}/sbin/slurmd
