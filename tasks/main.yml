@@ -7,6 +7,7 @@
 - name: install required packages
   yum: name={{ item }} state=present
   with_items:
+    - libselinux-python
     - gcc
     - munge
     - hwloc
@@ -21,3 +22,28 @@
 
 - include: install.yml
   when: slurm_bin.stat.exists == False
+
+- name: copy slurm startup script
+  template: src=init.d.slurm.j2 dest=/etc/init.d/slurm owner=root group=root mode=0700
+
+- name: create config directory
+  file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755
+
+- name: copy slurm config example
+  copy: src=slurm.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: copy slurmdbd config example
+  copy: src=slurmdbd.conf.example dest={{ slurm_prefix }}/etc owner=root group=root mode=0644
+
+- name: create slurm group
+  group: name=slurm gid=105 state=present
+
+- name: create slurm user
+  user: name=slurm uid=105 group=slurm createhome=no home={{ slurm_prefix }} shell=/bin/nologin state=present
+
+- name: create slurm directories
+  file: path={{ item }} state=directory owner=slurm mode=755
+  with_items:
+    - /var/spool/slurmd
+    - /var/log/slurm
+    - /opt/local/slurm
