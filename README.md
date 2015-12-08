@@ -1,5 +1,5 @@
-Ansible Role - rdi2-slurm
-=========================
+Ansible Role - slurm
+====================
 
 This role simply installs SLURM Workload Manager with the following configuration.
 
@@ -14,10 +14,12 @@ Platforms
 
 CentOS 6.7 is the only OS that is supported and tested so far.
 
-Role Variables
---------------
+Default Variables
+-----------------
 
-TBD
+- slurm_version: `15.08.4`
+- slurm_url: `http://www.schedmd.com/download/latest/slurm-{{ slurm_version }}.tar.bz2`
+- slurm_prefix: `/opt/slurm/{{ slurm_version }}`
 
 Dependencies
 ------------
@@ -31,7 +33,7 @@ Include the role like this:
 
     - hosts: servers
       roles:
-         - { role: kjtanaka.rdi2-slurm }
+         - { role: rdi2sys.slurm }
 
 License
 -------
