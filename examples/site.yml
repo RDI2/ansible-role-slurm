@@ -1,0 +1,4 @@
+---
+- hosts: all
+  roles:
+    - { role: "RDI2.slurm" }
