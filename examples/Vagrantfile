@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  N = 2
+  (0..N).each do |node_id|
+    config.vm.define "node#{node_id}" do |node|
+      node.vm.box = "bento/centos-6.7"
+      node.vm.hostname = "node#{node_id}"
+      node.vm.network "private_network", ip: "192.168.77.#{100+node_id}"
+
+      # Only execute once the Ansible provisioner,
+      # when all the nodes are up and ready.
+      if node_id == N
+        node.vm.provision :ansible do |ansible|
+          # Disable default limit to connect to all the nodes
+          ansible.limit = "all"
+          ansible.playbook = "site.yml"
+          ansible.sudo = true
+        end
+      end
+    end
+  end
+
+end
