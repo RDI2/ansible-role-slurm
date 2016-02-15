@@ -19,6 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           # Disable default limit to connect to all the nodes
           ansible.limit = "all"
           ansible.playbook = "site.yml"
+          ansible.sudo = true
         end
       end
     end
