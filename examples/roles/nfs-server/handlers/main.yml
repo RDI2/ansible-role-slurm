@@ -1,0 +1,8 @@
+---
+# handlers file for nfs-server
+
+- name: reexport nfs
+  shell: exportfs -ra
+
+- name: restart nfs server
+  service: name=nfs state=restarted

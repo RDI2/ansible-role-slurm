@@ -1,2 +1,58 @@
 ---
 # tasks file for example-config
+
+- name: install required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - pdsh
+
+- name: copy hosts file
+  copy: src=hosts dest=/etc/hosts owner=root group=root mode=0644
+
+- name: copy private key
+  copy: src=vagrant_id_rsa dest=/home/vagrant/.ssh/id_rsa owner=vagrant group=vagrant mode=0600
+
+- name: update authorized_keys file
+  authorized_key: user=vagrant key="{{ lookup('file', 'vagrant_id_rsa.pub') }}"
+
+- name: update know_hosts
+  shell: ssh-keyscan -H {{ item }} >> /home/vagrant/.ssh/known_hosts
+  with_items:
+    - node0
+    - node1
+    - node2
+    - 192.168.77.100
+    - 192.168.77.101
+    - 192.168.77.102
+  args:
+    creates: /home/vagrant/.ssh/known_hosts
+
+- name: add munge.key
+  copy: src=munge.key dest=/etc/munge/munge.key owner=munge group=munge mode=0600
+  notify: restart munge
+
+- name: update slurm.conf
+  copy: src=slurm.conf dest={{ slurm_prefix }}/etc/slurm.conf owner=slurm group=slurm mode=0644
+  notify:
+    - restart slurm
+
+- name: update slurm profile
+  copy: src=profile dest=/opt/lmod/lmod/init/profile owner=root group=root mode=0644
+
+- name: ensure munge is running
+  service: name=munge enabled=yes state=started
+
+- name: ensure slurm is running
+  service: name=slurm enabled=yes state=started
+
+- name: create slurm directory on lmod
+  file: path=/opt/lmod/lmod/modulefiles/Core/slurm state=directory
+
+- name: add slurm on lmod
+  template: src=lmod-slurm.lua.j2 dest=/opt/lmod/lmod/modulefiles/Core/slurm/{{ slurm_version }}.lua owner=root group=root mode=0644
+
+- name: setup ssh allowed users
+  copy: src=ssh_allowed_users dest=/etc/ssh/allowed_users owner=root group=root mode=0600
+
+- name: setup pam_sshd
+  copy: src=pam_sshd dest=/etc/pam.d/sshd owner=root group=root mode=0644
