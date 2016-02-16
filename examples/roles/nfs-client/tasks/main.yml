@@ -49,4 +49,4 @@
   group: name=group1 gid=2001 state=present
 
 - name: add user1
-  user: name=user1 group=group1 home=/home1/user1
+  user: name=user1 uid=501 group=group1 home=/home1/user1

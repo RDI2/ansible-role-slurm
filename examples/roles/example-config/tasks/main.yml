@@ -56,3 +56,9 @@
 
 - name: setup pam_sshd
   copy: src=pam_sshd dest=/etc/pam.d/sshd owner=root group=root mode=0644
+
+- name: copy prolog and epilog
+  copy: src={{ item }}.sh dest=/var/spool/slurmd/{{ item }}.sh owner=root group=root mode=0755
+  with_items:
+    - prolog
+    - epilog
