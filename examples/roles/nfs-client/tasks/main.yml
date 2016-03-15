@@ -1,0 +1,52 @@
+---
+# tasks file for nfs-client
+
+- name: install required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - libselinux-python
+    - nfs-utils
+
+- name: update idmapd
+  lineinfile: dest=/etc/idmapd.conf regexp='^Domain ' line='Domain = example.org' insertafter='^#Domain ' owner=root group=root mode=0644
+
+- name: check if /home1 exists
+  stat: path=/home1
+  register: dir_home1
+  changed_when: dir_home1.stat.exists == False
+
+- name: create /home1
+  file: path=/home1 state=directory owner=root group=root mode=0755
+  when: dir_home1.stat.exists == False
+
+- name: check if /project1 exists
+  stat: path=/project1
+  register: dir_project1
+  changed_when: dir_project1.stat.exists == False
+
+- name: create /project1
+  file: path=/project1 state=directory owner=root group=root mode=0755
+  when: dir_project1.stat.exists == False
+
+- name: check if /scratch exists
+  stat: path=/scratch
+  register: dir_scratch
+  changed_when: dir_scratch.stat.exists == False
+
+- name: create /scratch
+  file: path=/scratch state=directory owner=root group=root mode=0755
+  when: dir_scratch.stat.exists == False
+
+- name: update fstab
+  lineinfile: dest=/etc/fstab line="192.168.77.100:/{{ item }} /{{ item }} nfs defaults 0 0"
+  with_items:
+    - home1
+    - project1
+    - scratch
+  notify: mount all
+
+- name: add group1
+  group: name=group1 gid=2001 state=present
+
+- name: add user1
+  user: name=user1 uid=501 group=group1 home=/home1/user1

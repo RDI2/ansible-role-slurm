@@ -1,7 +1,0 @@
----
-
-- name: 'slurm role test'
-  hosts: test
-  sudo: yes
-  roles:
-    - '.'

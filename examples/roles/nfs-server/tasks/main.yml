@@ -1,0 +1,38 @@
+---
+# tasks file for nfs-server
+
+- name: install required packages
+  yum: name={{ item }} state=present
+  with_items:
+    - libselinux-python
+    - nfs-utils
+    - nfs-utils-lib
+
+- name: start nfs server
+  service: name=nfs state=started enabled=yes
+
+- name: update idmapd
+  lineinfile: dest=/etc/idmapd.conf regexp='^Domain ' line='Domain = example.org' insertafter='^#Domain ' owner=root group=root mode=0644
+  notify: restart nfs server
+
+- name: ensure directories exist
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - /home1
+    - /project1
+    - /scratch
+
+- name: update exports file
+  copy: src=exports dest=/etc/exports owner=root group=root mode=0644
+  notify: reexport nfs
+
+- name: add group1
+  group: name=group1 gid=2001 state=present
+
+- name: add user1
+  user: name=user1 uid=501 group=group1 home=/home1/user1 createhome=yes generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/id_rsa
+
+- name: add user1 authorized_keys
+  shell: cp -p /home1/user1/.ssh/id_rsa.pub /home1/user1/.ssh/authorized_keys
+  args:
+    creates: /home1/user1/.ssh/authorized_keys

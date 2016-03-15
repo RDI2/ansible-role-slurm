@@ -1,0 +1,14 @@
+-- -*- lua -*-
+
+local version = "{{ slurm_version }}"
+local base = pathJoin("/opt/slurm",version)
+whatis("Description: This module adds the SLURM to various paths")
+prepend_path('PATH',pathJoin(base,"bin"))
+prepend_path('LD_LIBRARY_PATH',pathJoin(base,"lib"))
+
+if (mode() == "load") then
+  LmodMessage("Module "..myModuleName().."/"..myModuleVersion().." loaded")
+end
+if (mode() == "unload") then
+  LmodMessage("Module "..myModuleName().."/"..myModuleVersion().." unloaded")
+end

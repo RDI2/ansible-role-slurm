@@ -1,0 +1,5 @@
+---
+# handlers file for nfs-client
+
+- name: mount all
+  shell: mount -a

@@ -1,4 +1,14 @@
 ---
 - hosts: all
   roles:
+    - { role: "RDI2.lmod" }
     - { role: "RDI2.slurm" }
+    - { role: "example-config" }
+
+- hosts: node0
+  roles:
+    - { role: nfs-server }
+
+- hosts: node1;node2
+  roles:
+    - { role: nfs-client }
