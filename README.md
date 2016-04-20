@@ -12,7 +12,7 @@ This role simply installs SLURM Workload Manager with the following configuratio
 Platforms
 ---------
 
-CentOS 6.7 is the only OS that is supported and tested so far.
+CentOS 6.7 and 7.2 are supported and tested so far.
 
 Default Variables
 -----------------
@@ -33,7 +33,7 @@ Include the role like this:
 
     - hosts: servers
       roles:
-         - { role: rdi2sys.slurm }
+         - { role: RDI2.slurm }
 
 License
 -------
