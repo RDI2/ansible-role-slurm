@@ -37,6 +37,15 @@
 
 - name: copy slurm startup script
   template: src=init.d.slurm.j2 dest=/etc/init.d/slurm owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
+
+- name: copy slurmctl startup script
+  template: src=slurmctld.service.j2 dest=/usr/lib/systemd/system/slurmctld.service owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
+
+- name: copy slurm startup script
+  template: src=slurmd.service.j2 dest=/usr/lib/systemd/system/slurmd.service owner=root group=root mode=0700
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "7"
 
 - name: create config directory
   file: path={{ slurm_prefix }}/etc state=directory owner=root group=root mode=0755

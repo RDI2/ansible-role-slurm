@@ -44,6 +44,7 @@
 
 - name: ensure slurm is running
   service: name=slurm enabled=yes state=started
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == "6"
 
 - name: create slurm directory on lmod
   file: path=/opt/lmod/lmod/modulefiles/Core/slurm state=directory
