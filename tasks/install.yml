@@ -8,7 +8,7 @@
   unarchive: copy=no src=/tmp/slurm-{{ slurm_version }}.tar.bz2 dest=/tmp
 
 - name: create slurm installation directory
-  file: path=/opt/slurm state=directory owner=root group=root mode=0755
+  file: path={{ slurm_prefix }} state=directory owner=root group=root mode=0755
 
 - name: configure slurm
   shell: ./configure --prefix=/opt/slurm/{{ slurm_version }} --enable-pam --with-pam_dir=/lib64/security
@@ -20,7 +20,7 @@
   shell: make && make install
   args:
     chdir: /tmp/slurm-{{ slurm_version }}
-    creates: /opt/slurm/{{ slurm_version }}/sbin/slurmd
+    creates: "{{ slurm_prefix }}/sbin/slurmd"
 
 - name: make contrib
   shell: make contrib
