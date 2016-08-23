@@ -1,0 +1,3 @@
+---
+
+slurm_prefix: /N/soft/slurm/{{ slurm_version }}
