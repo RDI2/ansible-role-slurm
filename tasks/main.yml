@@ -28,7 +28,7 @@
   service: name=munge enabled=yes
 
 - name: check if already installed
-  stat: path=/opt/slurm/{{ slurm_version }}/bin
+  stat: path={{ slurm_prefix }}/bin
   register: slurm_bin
   changed_when: slurm_bin.stat.exists == False
 
