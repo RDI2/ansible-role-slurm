@@ -2,7 +2,7 @@
 # tasks file for slurm install role
 
 - name: download slurm tarball
-  get_url: url={{ slurm_url }} dest=/tmp
+  get_url: url={{ slurm_url }} dest=/tmp/slurm-{{ slurm_version }}.tar.bz2 timeout=120
 
 - name: extract slurm tarball
   unarchive: copy=no src=/tmp/slurm-{{ slurm_version }}.tar.bz2 dest=/tmp
