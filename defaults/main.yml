@@ -1,6 +1,6 @@
 ---
 # defaults file for slurm
 
-slurm_version: 16.05.3
-slurm_url: http://www.schedmd.com/download/archive/slurm-{{ slurm_version }}.tar.bz2
+slurm_version: 16.05.4
+slurm_url: http://www.schedmd.com/download/latest/slurm-{{ slurm_version }}.tar.bz2
 slurm_prefix: /opt/slurm/{{ slurm_version }}
